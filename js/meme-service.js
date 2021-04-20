@@ -1,5 +1,6 @@
 'use strict';
 
+// Global model variables:
 var gKeywords = { 'funny': 12, 'cute': 3, 'tv': 12, 'politics': 3, 'sleep': 2, 'tough': 3, 'kids': 4, 'kiss': 2 }
 var gImgs = [{ id: 1, url: 'img/meme-imgs(square)/1.jpg', keywords: ['funny', 'tv', 'politics'] },
 { id: 2, url: 'img/meme-imgs(square)/2.jpg', keywords: ['animals', 'cute', 'kiss'] },
@@ -22,15 +23,7 @@ var gImgs = [{ id: 1, url: 'img/meme-imgs(square)/1.jpg', keywords: ['funny', 't
 var gMeme = {
     selectedImgId: 2,
     selectedLineIdx: 0,
-    selectedElImg: '',
-    lines: [
-        {
-            txt: 'I never eat Falafel',
-            size: 20,
-            align: 'left',
-            color: 'red'
-        }
-    ]
+    lines: []
 }
 
 //UPLOAD IMG WITH INPUT FILE
@@ -83,8 +76,19 @@ function doUploadImg(elForm, onSuccess) {
         })
 }
 
-
-
+function drawText() {
+    if (gMeme.lines.length) {
+        gMeme.lines.forEach(line => {
+            gCtx.lineWidth = 2
+            gCtx.strokeStyle = line.stroke;
+            gCtx.fillStyle = line.color;
+            gCtx.font = `${line.size}px ${line.font}`
+            gCtx.textAlign = line.align;
+            gCtx.fillText(line.txt, line.x, line.y)
+            gCtx.strokeText(line.txt, line.x, line.y)
+        });
+    }
+}
 
 // facebook api
 (function (d, s, id) {
@@ -98,18 +102,4 @@ function doUploadImg(elForm, onSuccess) {
 function clearCanvas() {
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
     renderImg();
-}
-
-function drawText(text) {
-    if (text) {
-        gCtx.lineWidth = 2
-        gCtx.strokeStyle = gCurrColor;
-        gCtx.fillStyle = gCurrColor;
-        gCtx.font = '40px impact'
-        gCtx.textAlign = 'center'
-        gCtx.fillText(text, 100, 100)
-        gCtx.strokeText(text, 100, 100)
-        gElCanvas = document.getElementById('my-canvas')
-        gCtx = gElCanvas.getContext('2d')
-    }
 }

@@ -6,3 +6,25 @@ canvas{
     margin-top: 10px;
     border: 3px solid;
 }
+
+.canvas-container{
+    width: 90vw;
+    height: auto;
+    max-width: 450px;
+    max-height: 450px;
+}
+
+.pressed{
+    background-color: green;
+}
+
+.img-gallery{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 5px
+}
+
+.img-gallery img{
+    height: 200px;
+    width: 200px;
+}
