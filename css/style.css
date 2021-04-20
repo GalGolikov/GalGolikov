@@ -2,6 +2,21 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: eurofurence;
+    src: url(/fonts/eurofurence/eurof55.ttf);
+}
+
+@font-face {
+    font-family: champange_limousines;
+    src: url(/fonts/champagne_limousines/Champagne\ &\ Limousines.ttf);
+}
+
+@font-face {
+    font-family: lato;
+    src: url(/fonts/Lato/Lato-Regular.ttf);
+}
+
 canvas{
     margin-top: 10px;
     border: 3px solid;
@@ -20,8 +35,9 @@ canvas{
 
 .img-gallery{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 5px
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto, 1fr);
 }
 
 .img-gallery img{

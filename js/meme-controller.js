@@ -53,9 +53,12 @@ function renderMemeEditScreen() {
                 value="40" />
         <button onclick="onIncreaseFont()" class="font-plus"><i class="fas fa-plus"></i></button>
             <label for="font-picker">Choose a font :</label>
-            <select onchange="onSetFont(this.value)" id="font-picker">
+            <select onchange="onSetFont(this)" id="font-picker" style="font-family:${gCurrFont}">
                 <option value="impact" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Impact</option>
                 <option value="verdana" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Verdana</option>
+                <option value="eurofurence" style="font-family: eurofurence;">Eurofurence</option>
+                <option value="champange_limousines" style="font-family: champange_limousines;">Champange limousines</option>
+                <option value="lato" style="   font-family: lato;">Lato</option>
             </select>
         </div>
         <div class="align-container">
@@ -134,8 +137,10 @@ function onSetStroke(strokeColor) {
     gCurrStroke = strokeColor;
 }
 
-function onSetFont(font) {
+function onSetFont(elSelect) {
+    const font = elSelect.value;
     gCurrFont = font;
+    elSelect.style.fontFamily = font;
 }
 
 function onSetFontSize(size) {
