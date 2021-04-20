@@ -78,7 +78,6 @@ function renderMemeEditScreen() {
     resizeCanvas();
     gCtx = gElCanvas.getContext('2d');
     renderCurrAlignPressed();
-    renderImg();
 }
 
 function resizeCanvas() {
@@ -92,6 +91,7 @@ function onSelectImg(elImg, imgId) {
     gMeme.selectedImgId = imgId;
     gImg = elImg;
     renderMemeEditScreen();
+    renderImg();
 }
 
 
@@ -106,9 +106,9 @@ function onImgInput(ev) {
 }
 
 function loadImageFromInput(ev, onImageReady) {
-    document.querySelector('.share-container').innerHTML = ''
+    //document.querySelector('.share-container').innerHTML = ''
     var reader = new FileReader()
-
+    renderMemeEditScreen();
     reader.onload = function (event) {
         var img = new Image()
         img.onload = onImageReady.bind(null, img)
