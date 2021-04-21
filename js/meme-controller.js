@@ -17,6 +17,26 @@ function onInit() {
     renderGalleryScreen();
 }
 
+function renderSavedMemesScreen() {
+    const savedMemesArr = getMemesFromLocalStorage() || [];
+    let content = '';
+    if (savedMemesArr.length) {
+        let savedMemesHTML = '';
+        console.log(savedMemesArr);
+        for (let i = 1; i <= savedMemesArr.length; i++) {
+            // convert each meme to img elements
+            let elImg = `<img src="${savedMemesArr[i]}}"></img>`
+            savedMemesHTML += elImg;
+        }
+        content = savedMemesHTML;
+    } else {
+        content = `<span class="empty-state">No saved memes yet!</span>`
+    }
+
+    const screenStrHTML = `<div class="saved-memes">${content}</div>`
+    gElScreenContainer.innerHTML = screenStrHTML;
+}
+
 function renderGalleryScreen() {
     let imagesStrHTML = '';
     for (let i = 1; i <= gImgs.length; i++) {
@@ -31,8 +51,7 @@ function renderGalleryScreen() {
 }
 
 function renderMemeEditScreen() {
-    const screenStrHTML = `<a href="#" class="btn" onclick="onBackToGallery()">Back to Gallery</button>
-    <div class="inputs">
+    const screenStrHTML = `<div class="inputs">
         <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
             <input name="img" id="imgData" type="hidden" />
             <button class="btn" type="submit">Publish</button>
@@ -69,7 +88,10 @@ function renderMemeEditScreen() {
         <div class="text-container"><input class="text-input" type="text" placeholder="Enter your text" />
             <button onclick="onAddText()">Add Text</button>
         </div>
-        <button onclick="onClearCanvas()" class="clear">Clear All</button>
+        <div class="clear-container">
+            <button onclick="onClearCanvas()" class="clear">Clear All</button>
+        </div>
+        <button class="save-to-storage" onclick="onSaveToStorage()">Save Meme</button>
         <section class="canvas">
             <div class="canvas-container">
                 <canvas id="my-canvas" height="450" width="450"></canvas>
@@ -81,6 +103,7 @@ function renderMemeEditScreen() {
     resizeCanvas();
     gCtx = gElCanvas.getContext('2d');
     renderCurrAlignPressed();
+    hammerCanvas();
 }
 
 function resizeCanvas() {
@@ -130,46 +153,108 @@ function renderImg(img = gImg) {
     gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
 }
 function onSetColor(color) {
+    // If a line is selected - change its color
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].color = color;
+        renderLinesToCanvas();
+    }
     gCurrColor = color;
 }
 
 function onSetStroke(strokeColor) {
+    // If a line is selected - change its stroke color
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].stroke = strokeColor;
+        renderLinesToCanvas();
+    }
     gCurrStroke = strokeColor;
 }
 
 function onSetFont(elSelect) {
+    // If a line is selected - change its font
     const font = elSelect.value;
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].font = font;
+        // TODO: call adjustTextToFitCanvas();
+        renderLinesToCanvas();
+    }
     gCurrFont = font;
     elSelect.style.fontFamily = font;
 }
 
 function onSetFontSize(size) {
+    // If a line is selected - change its font size
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].size = size;
+        // TODO: call adjustTextToFitCanvas();
+        // TODO: call adjustStrokeToFontSize();
+        renderLinesToCanvas();
+    }
     gCurrFontSize = size;
 }
 
 function onIncreaseFont() {
+    // If a line is selected - change its font size
+    if (gMeme.selectedLineIdx !== null) {
+        if (gMeme.lines[gMeme.selectedLineIdx].size < gMaxFont) {
+            gMeme.lines[gMeme.selectedLineIdx].size++;
+            // TODO: call adjustTextToFitCanvas();
+            // TODO: call adjustStrokeToFontSize();
+            renderLinesToCanvas();
+        }
+    }
     if (gCurrFontSize < gMaxFont) gCurrFontSize++;
     const elFontSizeInput = document.getElementById('size-picker');
     elFontSizeInput.value = gCurrFontSize;
 }
 
 function onDecreaseFont() {
+    // If a line is selected - change its font size
+    if (gMeme.selectedLineIdx !== null) {
+        if (gMeme.lines[gMeme.selectedLineIdx].size > gMinFont) {
+            gMeme.lines[gMeme.selectedLineIdx].size--;
+            // TODO: call adjustTextToFitCanvas();
+            // TODO: call adjustStrokeToFontSize();
+            renderLinesToCanvas();
+        }
+    }
     if (gCurrFontSize > gMinFont) gCurrFontSize--;
     const elFontSizeInput = document.getElementById('size-picker');
     elFontSizeInput.value = gCurrFontSize;
 }
 
 function onAlignLeft() {
+    // If a line is selected - change its alignment
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].align = 'left';
+        gMeme.lines[gMeme.selectedLineIdx].x = 10;
+        // TODO: call adjustTextToFitCanvas();
+        renderLinesToCanvas();
+    }
     gCurrAlignment = 'left';
     renderCurrAlignPressed();
 }
 
 function onAlignCenter() {
+    // If a line is selected - change its alignment
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].align = 'center';
+        gMeme.lines[gMeme.selectedLineIdx].x = gElCanvas.width / 2;
+        // TODO: call adjustTextToFitCanvas();
+        renderLinesToCanvas();
+    }
     gCurrAlignment = 'center';
     renderCurrAlignPressed();
 }
 
 function onAlignRight() {
+    // If a line is selected - change its alignment
+    if (gMeme.selectedLineIdx !== null) {
+        gMeme.lines[gMeme.selectedLineIdx].align = 'right';
+        gMeme.lines[gMeme.selectedLineIdx].x = 440;
+        // TODO: call adjustTextToFitCanvas();
+        renderLinesToCanvas();
+    }
     gCurrAlignment = 'right';
     renderCurrAlignPressed();
 }
@@ -200,7 +285,6 @@ function onAddText() {
     const elTextInput = document.querySelector('.text-input');
     const txt = elTextInput.value;
     if (txt) {
-        // TODO: handle line break according to text & canvas width
         const x = gCurrAlignment === 'left' ? 10 : gCurrAlignment === 'right' ? 440 : gElCanvas.width / 2
         let y;
         if (!gMeme.lines.length) {
@@ -210,8 +294,7 @@ function onAddText() {
         } else {
             y = gElCanvas.height / 2;
         }
-
-        gMeme.lines.push({
+        const newLine = {
             txt,
             size: gCurrFontSize,
             align: gCurrAlignment,
@@ -219,19 +302,66 @@ function onAddText() {
             x,
             y,
             font: gCurrFont,
-            stroke: gCurrStroke
-        })
-        drawText();
+            stroke: gCurrStroke,
+            isDragging: false,
+        }
+        gMeme.lines.push(newLine)
+        renderLinesToCanvas();
         elTextInput.value = '';
+        // TODO: call function adjustLineBreakers()
     }
 }
 
 function onClearCanvas() {
     gMeme.lines = [];
     clearCanvas();
+    resetLineSelection();
 }
 
-function onBackToGallery() {
+function onSaveToStorage() {
+    const meme = `data:image/jpeg;base64,${getBase64Image(gElCanvas)}`;
+    saveMemeToLocalStorage(meme);
+    // TODO: show "saved" popup modal for few sec & remove
     renderGalleryScreen();
 }
 
+function renderLinesToCanvas() {
+    clearCanvas();
+    if (gMeme.lines.length) {
+        gMeme.lines.forEach((line, index) => {
+            if (index === gMeme.selectedLineIdx) {
+                // show selected appearance
+                drawSelectedLineBox(line);
+            } else {
+                gCtx.lineWidth = 2
+                gCtx.strokeStyle = line.stroke;
+                gCtx.fillStyle = line.color;
+                gCtx.font = `${line.size}px ${line.font}`
+                gCtx.textAlign = line.align;
+                gCtx.fillText(line.txt, line.x, line.y)
+                gCtx.strokeText(line.txt, line.x, line.y)
+            }
+        });
+    }
+}
+
+function getBase64Image(img) {
+    gElCanvas.width = img.width;
+    gElCanvas.height = img.height;
+    gCtx.drawImage(img, 0, 0);
+    const dataURL = gElCanvas.toDataURL("image/jpeg");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+// ===== Nav bar functions =====
+function onGoToSavedMemes() {
+    resetLinesModel();
+    renderSavedMemesScreen();
+    resetLineSelection();
+}
+
+function onGoToGallery() {
+    resetLinesModel();
+    renderGalleryScreen();
+    resetLineSelection();
+}

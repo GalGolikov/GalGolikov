@@ -16,7 +16,8 @@
 
     <nav class="main-nav">
         <div class="logo">
-
+        <button class="btn" onclick="onGoToGallery()">Gallery</button>
+        <button class="btn" onclick="onGoToSavedMemes()">Saved Memes</button>
         </div>
 
     </nav>
@@ -26,7 +27,9 @@
 
     <footer class="about"></footer>
 
-    <script src="./js/meme-utils.js"></script>
+    <script src="lib/hammer.min.js"></script>
+    <script src="./js/storage-service.js"></script>
+    <script src="js/hammer-service.js"></script>
     <script src="./js/meme-service.js"></script>
     <script src="./js/meme-controller.js"></script>
 </body>

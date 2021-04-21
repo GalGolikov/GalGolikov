@@ -21,8 +21,8 @@ var gImgs = [{ id: 1, url: 'img/meme-imgs(square)/1.jpg', keywords: ['funny', 't
 { id: 17, url: 'img/meme-imgs(square)/17.jpg', keywords: ['tough', 'tv', 'politics'] },
 { id: 18, url: 'img/meme-imgs(square)/18.jpg', keywords: ['funny', 'tv', 'kids'] }];
 var gMeme = {
-    selectedImgId: 2,
-    selectedLineIdx: 0,
+    selectedImgId: null,
+    selectedLineIdx: null,
     lines: []
 }
 
@@ -76,18 +76,80 @@ function doUploadImg(elForm, onSuccess) {
         })
 }
 
-function drawText() {
-    if (gMeme.lines.length) {
-        gMeme.lines.forEach(line => {
-            gCtx.lineWidth = 2
-            gCtx.strokeStyle = line.stroke;
-            gCtx.fillStyle = line.color;
-            gCtx.font = `${line.size}px ${line.font}`
-            gCtx.textAlign = line.align;
-            gCtx.fillText(line.txt, line.x, line.y)
-            gCtx.strokeText(line.txt, line.x, line.y)
-        });
+
+function drawSelectedLineBox(lineObj) {
+    const lineWidth = gCtx.measureText(lineObj.txt).width;
+    // rounded rect
+    gCtx.rect(lineWidth, lineWidth, lineObj.size, lineObj.size, 20);
+    gCtx.fillStyle = "#88deff7a";
+    const rectY = lineObj.y - lineObj.size - 5;
+    let rectX;
+    switch (lineObj.align) {
+        case 'center':
+            rectX = lineObj.x - (lineWidth / 2) - 5;
+            break;
+        case 'right':
+            rectX = lineObj.x - lineWidth - 5;
+            break;
+        case 'left':
+            rectX = lineObj.x - 5;
     }
+    gCtx.fillRect(rectX, rectY, lineWidth + 15, lineObj.size + 15);
+    gCtx.strokeStyle = '#ffffff';
+    gCtx.strokeRect(rectX, rectY, lineWidth + 15, lineObj.size + 15);
+
+    // text
+    gCtx.lineWidth = 2;
+    gCtx.strokeStyle = lineObj.stroke;
+    gCtx.fillStyle = lineObj.color;
+    gCtx.font = `${lineObj.size}px ${lineObj.font}`
+    gCtx.textAlign = lineObj.align;
+    gCtx.fillText(lineObj.txt, lineObj.x, lineObj.y)
+    gCtx.strokeText(lineObj.txt, lineObj.x, lineObj.y)
+}
+
+function clearCanvas() {
+    if (gCtx) {
+        gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
+        renderImg();
+    }
+}
+
+function resetLinesModel() {
+    gMeme.lines = [];
+}
+
+function selectLineForEdit(lineIdx) {
+    gMeme.selectedLineIdx = lineIdx;
+    // add clear line btn
+    const btnHTML = `<button onclick="clearSelectedLine()" class="clear-selected"><i class="fas fa-trash-alt"></i></button>`;
+    const elClearContainer = document.querySelector('.clear-container');
+    elClearContainer.innerHTML += btnHTML;
+    renderLinesToCanvas();
+}
+
+function resetLineSelection() {
+    gMeme.selectedLineIdx = null;
+    // remove clear selected line btn
+    const elClearLineBtn = document.querySelector('.clear-selected');
+    if (elClearLineBtn) elClearLineBtn.remove();
+    renderLinesToCanvas();
+}
+
+// Fit the text well inside the canvas after any editing (size,font,align)
+// set x,y according to lineWdith, size and align
+// TODO: function adjustTextToFitCanvas(){}
+
+// Set the stroke according to font size after edittin
+// function adjustStrokeToFontSize(){}
+
+// Add line breakers if needed to fit canvas well
+// function adjustLineBreakers(){}
+
+function clearSelectedLine() {
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+    renderLinesToCanvas();
+    resetLineSelection();
 }
 
 // facebook api
@@ -98,8 +160,3 @@ function drawText() {
     js.src = 'https://connect.facebook.net/he_IL/sdk.js#xfbml=1&version=v3.0&appId=807866106076694&autoLogAppEvents=1';
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
-function clearCanvas() {
-    gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
-    renderImg();
-}
