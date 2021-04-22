@@ -382,3 +382,7 @@ function onGoToGallery() {
     renderGalleryScreen();
     resetLineSelection();
 }
+
+function onScrollToFooter(){
+    // scroll to footer
+}
