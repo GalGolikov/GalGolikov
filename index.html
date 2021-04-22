@@ -12,20 +12,31 @@
 </head>
 
 <body onload="onInit()">
-    <h1> Meme Creator </h1>
 
-    <nav class="main-nav">
-        <div class="logo">
-        <button class="btn" onclick="onGoToGallery()">Gallery</button>
-        <button class="btn" onclick="onGoToSavedMemes()">Saved Memes</button>
+    <header class="main-header">
+        <div class="nav-container container">
+            <div class="logo"><img src="./img/logo/LOGO.png" alt="LOGO"></div>
+            <ul class="main-nav">
+                <li class="gallery-tab">
+                    <div class=" nav-tab" onclick="onGoToGallery()">Gallery</div>
+                </li>
+                <li class="saved-memes-tab">
+                    <div class="nav-tab" onclick="onGoToSavedMemes()">Saved Memes</div>
+                </li>
+                <li class="about-tab">
+                    <div class=" nav-tab" onclick="onScrollToFooter()">About</div>
+                </li>
+            </ul>
         </div>
-
-    </nav>
-
+    </header>
     <div id="screen-container">
     </div>
-
     <footer class="about"></footer>
+    <div class="bg-animation-container">
+        <div id='stars'></div>
+        <div id='stars2'></div>
+        <div id='stars3'></div>
+    </div>
 
     <script src="lib/hammer.min.js"></script>
     <script src="./js/storage-service.js"></script>

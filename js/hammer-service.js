@@ -3,7 +3,7 @@
 function hammerCanvas() {
     const hammer = new Hammer(gElCanvas);
     // add a "PAN" recognizer to it (all directions)
-    hammer.add(new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 9 }));
+    hammer.add(new Hammer.Pan({ direction: Hammer.DIRECTION_ALL, threshold: 15 }));
     hammer.on('pan', handleDrag);
     hammer.on('tap press', handleTapPress);
 }

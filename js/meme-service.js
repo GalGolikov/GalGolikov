@@ -122,7 +122,7 @@ function resetLinesModel() {
 function selectLineForEdit(lineIdx) {
     gMeme.selectedLineIdx = lineIdx;
     // add clear line btn
-    const btnHTML = `<button onclick="clearSelectedLine()" class="clear-selected"><i class="fas fa-trash-alt"></i></button>`;
+    const btnHTML = `<div onclick="clearSelectedLine()" class="clear-selected btn"><i class="fas fa-trash-alt"></i></div>`;
     const elClearContainer = document.querySelector('.clear-container');
     elClearContainer.innerHTML += btnHTML;
     renderLinesToCanvas();
