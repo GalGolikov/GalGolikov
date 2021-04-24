@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sprint 2 by G.G</title>
+    <link rel="stylesheet" href="./css/bg-animation.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
         integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous" />
@@ -21,15 +22,22 @@
                     <div class=" nav-tab">Gallery</div>
                 </li>
                 <li class="saved-memes-tab" onclick="onGoToSavedMemes()">
-                    <div class="nav-tab" >Saved Memes</div>
+                    <div class="nav-tab">Saved Memes</div>
                 </li>
                 <li class="about-tab" onclick="onScrollToFooter()">
-                    <div class=" nav-tab" >About</div>
+                    <div class=" nav-tab">About</div>
                 </li>
             </ul>
         </div>
     </header>
     <div id="screen-container">
+    </div>
+    <div class="modal" class="modal" hidden>
+        <div class="modal-content">
+            <span class="close" onclick="onCloseModal()">&times;</span>
+            <h3 class="modal-headline"></h3>
+            <p class="modal-txt"></p>
+        </div>
     </div>
     <footer class="about"></footer>
     <div class="bg-animation-container">
@@ -40,7 +48,11 @@
 
     <script src="./js/storage-service.js"></script>
     <script src="./js/meme-service.js"></script>
+    <script src="./js/utils.js"></script>
     <script src="./js/meme-controller.js"></script>
+    <script src="./js/meme-edit-screen.js"></script>
+    <script src="./js/gallery-screen.js"></script>
+    <script src="./js/saved-memes-screen.js"></script>
     <script src="./js/drag-service.js"></script>
 </body>
 

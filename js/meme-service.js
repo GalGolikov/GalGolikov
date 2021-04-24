@@ -138,16 +138,6 @@ function resetLineSelection() {
     renderLinesToCanvas();
 }
 
-// Fit the text well inside the canvas after any editing (size,font,align)
-// set x,y according to lineWdith, size and align
-// TODO: function adjustTextToFitCanvas(){}
-
-// Set the stroke according to font size after edittin
-// function adjustStrokeToFontSize(){}
-
-// Add line breakers if needed to fit canvas well
-// function adjustLineBreakers(){}
-
 function clearSelectedLine() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
     renderLinesToCanvas();

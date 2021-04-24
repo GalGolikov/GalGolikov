@@ -15,9 +15,7 @@ function getMemesFromLocalStorage() {
     return memesArr;
 }
 
-function saveMemeToLocalStorage(newMeme) {
-    let updatedMemesArr = getMemesFromLocalStorage() || [];
-    updatedMemesArr.push(newMeme);
-    saveToStorage('memes', updatedMemesArr);
+function saveMemesToLocalStorage(memes) {
+    saveToStorage('memes', memes);
 }
 

@@ -1,32 +1,33 @@
 'use script';
 
+// Global drag-service variables:
 var gStartPos;
-const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
+const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 
 function addListeners() {
-    addMouseListeners()
-    addTouchListeners()
+    addMouseListeners();
+    addTouchListeners();
 }
 
 function addMouseListeners() {
-    gElCanvas.addEventListener('mousemove', onMove)
+    gElCanvas.addEventListener('mousemove', onMove);
 
-    gElCanvas.addEventListener('mousedown', onDown)
+    gElCanvas.addEventListener('mousedown', onDown);
 
-    gElCanvas.addEventListener('mouseup', onUp)
+    gElCanvas.addEventListener('mouseup', onUp);
 }
 
 function addTouchListeners() {
-    gElCanvas.addEventListener('touchmove', onMove)
+    gElCanvas.addEventListener('touchmove', onMove);
 
-    gElCanvas.addEventListener('touchstart', onDown)
+    gElCanvas.addEventListener('touchstart', onDown);
 
-    gElCanvas.addEventListener('touchend', onUp)
+    gElCanvas.addEventListener('touchend', onUp);
 }
 
 function onDown(ev) {
     if (gMeme.lines.length) {
-        const pos = getEvPos(ev)
+        const pos = getEvPos(ev);
         setSelectedLine(pos);
         if (gMeme.selectedLineIdx === null) return;
         gMeme.lines[gMeme.selectedLineIdx].isDragging = true;
@@ -40,13 +41,13 @@ function onMove(ev) {
         if (gMeme.selectedLineIdx !== null) {
             const line = gMeme.lines[gMeme.selectedLineIdx];
             if (line.isDragging) {
-                const pos = getEvPos(ev)
-                const dx = pos.x - gStartPos.x
-                const dy = pos.y - gStartPos.y
-                line.x += dx
-                line.y += dy
-                gStartPos = pos
-                renderLinesToCanvas()
+                const pos = getEvPos(ev);
+                const dx = pos.x - gStartPos.x;
+                const dy = pos.y - gStartPos.y;
+                line.x += dx;
+                line.y += dy;
+                gStartPos = pos;
+                renderLinesToCanvas();
             }
         }
     }
@@ -55,8 +56,8 @@ function onMove(ev) {
 function onUp() {
     if (gMeme.lines.length) {
         if (gMeme.selectedLineIdx !== null) {
-            gMeme.lines[gMeme.selectedLineIdx].isDragging = false
-            document.body.style.cursor = 'grab'
+            gMeme.lines[gMeme.selectedLineIdx].isDragging = false;
+            document.body.style.cursor = 'grab';
         }
     }
 }
@@ -65,16 +66,16 @@ function getEvPos(ev) {
     const pos = {
         x: ev.offsetX,
         y: ev.offsetY
-    }
+    };
     if (gTouchEvs.includes(ev.type)) {
-        ev.preventDefault()
-        ev = ev.changedTouches[0]
+        ev.preventDefault();
+        ev = ev.changedTouches[0];
         pos = {
             x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
             y: ev.pageY - ev.target.offsetTop - ev.target.clientTop
-        }
+        };
     }
-    return pos
+    return pos;
 }
 
 function setSelectedLine(clickedPos) {
@@ -83,32 +84,32 @@ function setSelectedLine(clickedPos) {
         const lineX = line.x;
         const lineY = line.y;
         const lineWidth = gCtx.measureText(line.txt).width;
-
+        let distance;
         switch (line.align) {
             case 'center':
-                let distance = Math.sqrt((lineX - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2)
+                distance = Math.sqrt((lineX - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2);
                 if (distance <= lineWidth) {
                     selectLineForEdit(index);
                     isLineClicked = true;
                 }
                 break;
             case 'left':
-                distance = Math.sqrt(((lineX - (lineWidth / 2)) - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2)
+                distance = Math.sqrt(((lineX - (lineWidth / 2)) - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2);
                 if (distance <= lineWidth) {
                     selectLineForEdit(index);
                     isLineClicked = true;
                 }
                 break;
             case 'right':
-                distance = Math.sqrt(((lineX + (lineWidth / 2)) - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2)
+                distance = Math.sqrt(((lineX + (lineWidth / 2)) - clickedPos.x) ** 2 + (lineY - clickedPos.y) ** 2);
                 if (distance <= lineWidth) {
                     selectLineForEdit(index);
                     isLineClicked = true;
                 }
                 break;
         }
-    })
-    if(!isLineClicked) resetLineSelection();
+    });
+    if (!isLineClicked) resetLineSelection();
 }
 
 
