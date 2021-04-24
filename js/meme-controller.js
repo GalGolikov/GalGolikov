@@ -2,7 +2,7 @@
 
 // Global controller variables:
 var gElCanvas;
-var gElScreenContainer = document.getElementById('screen-container');;
+var gElScreenContainer = document.getElementById('screen-container');
 var gCtx;
 var gCurrColor = 'white';
 var gCurrStroke = 'black';
@@ -113,11 +113,11 @@ function renderMemeEditScreen() {
         </section></div>`;
     gElScreenContainer.innerHTML = screenStrHTML;
     gElCanvas = document.getElementById('my-canvas');
-    resizeCanvas();
     gCtx = gElCanvas.getContext('2d');
+    resizeCanvas();
+    addListeners()
     renderCurrAlignPressed();
-    hammerCanvas();
-
+    // hammerCanvas();
     // remove prev active tab
     const elPrevActive = document.querySelector('.active');
     if (elPrevActive) elPrevActive.classList.remove('active');
@@ -302,12 +302,12 @@ function onAddText() {
     const elTextInput = document.querySelector('.text-input');
     const txt = elTextInput.value;
     if (txt) {
-        const x = gCurrAlignment === 'left' ? 10 : gCurrAlignment === 'right' ? 440 : gElCanvas.width / 2
+        const x = gCurrAlignment === 'left' ? 10 : gCurrAlignment === 'right' ? gElCanvas.width - 10 : gElCanvas.width / 2
         let y;
         if (!gMeme.lines.length) {
             y = gCurrFontSize;
         } else if (gMeme.lines.length === 1) {
-            y = 450 - (gCurrFontSize / 2);
+            y = gElCanvas.height - (gCurrFontSize / 2);
         } else {
             y = gElCanvas.height / 2;
         }
@@ -383,6 +383,6 @@ function onGoToGallery() {
     resetLineSelection();
 }
 
-function onScrollToFooter(){
+function onScrollToFooter() {
     // scroll to footer
 }

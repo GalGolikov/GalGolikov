@@ -221,7 +221,7 @@ input:focus{
     #meme-edit-screen{
         grid-auto-flow: row;
         justify-items: center;
-        overflow: auto;
+        overflow: hidden;
     }
     .control-box{
         width: 100%;
@@ -274,6 +274,10 @@ input:focus{
     .control-box{
         min-height: fit-content;
         max-height: fit-content;
+    }
+
+    .font-container select{
+        margin-top: 7px;
     }
 
     .nav-container{

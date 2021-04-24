@@ -79,7 +79,6 @@ function doUploadImg(elForm, onSuccess) {
 
 function drawSelectedLineBox(lineObj) {
     const lineWidth = gCtx.measureText(lineObj.txt).width;
-    // rounded rect
     gCtx.rect(lineWidth, lineWidth, lineObj.size, lineObj.size, 20);
     gCtx.fillStyle = "#88deff7a";
     const rectY = lineObj.y - lineObj.size - 5;
@@ -122,10 +121,13 @@ function resetLinesModel() {
 function selectLineForEdit(lineIdx) {
     gMeme.selectedLineIdx = lineIdx;
     // add clear line btn
-    const btnHTML = `<div onclick="clearSelectedLine()" class="clear-selected btn"><i class="fas fa-trash-alt"></i></div>`;
-    const elClearContainer = document.querySelector('.clear-container');
-    elClearContainer.innerHTML += btnHTML;
-    renderLinesToCanvas();
+    const elClearLineBtn = document.querySelector('.clear-selected');
+    if (!elClearLineBtn) {
+        const btnHTML = `<div onclick="clearSelectedLine()" class="clear-selected btn"><i class="fas fa-trash-alt"></i></div>`;
+        const elClearContainer = document.querySelector('.clear-container');
+        elClearContainer.innerHTML += btnHTML;
+        renderLinesToCanvas();
+    }
 }
 
 function resetLineSelection() {
