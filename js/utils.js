@@ -44,7 +44,3 @@ function onGoToGallery() {
     resetLineSelection();
 }
 
-function onScrollToFooter() {
-    // scroll to footer
-}
-
