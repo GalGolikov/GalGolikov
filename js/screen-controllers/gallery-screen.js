@@ -62,6 +62,7 @@ function onClickKeyword(elKeyword) {
     // Enlarge the font size
     gKeywords[keyword]++;
     renderKeywordSizeByCount();
+    renderActiveFilter(elKeyword);
 }
 
 function filterGallery(keyword) {
@@ -77,4 +78,12 @@ function renderImgsToGallery(imgs) {
     });
     const elImgGallery = document.querySelector('.img-gallery');
     elImgGallery.innerHTML = imagesStrHTML;
+}
+
+function renderActiveFilter(elThisFilter = null) {
+    // remove prev active filter
+    const elPrevActive = document.querySelector('.keyword.active');
+    if (elPrevActive) elPrevActive.classList.remove('active');
+    // make this tab active if given
+    if (elThisFilter) elThisFilter.classList.add('active');
 }

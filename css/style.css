@@ -96,6 +96,12 @@ canvas {
   border: solid black 2px;
 }
 
+.keyword:hover {
+  cursor: pointer;
+  background-color: #fb9623;
+  color: black;
+}
+
 .img-gallery {
   display: grid;
   grid-gap: 8px;

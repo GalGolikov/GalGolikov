@@ -6,7 +6,7 @@ var gElmodal = document.querySelector('.modal');
 // ===== Modal functions =====
 function renderModal(headline, txt, time) {
     // Add the txt to the modal
-    const elModalHeadline = document.querySelector('.modal-headline')
+    const elModalHeadline = document.querySelector('.modal-headline');
     const elModalTxt = document.querySelector('.modal-txt');
     elModalHeadline.innerHTML = headline;
     elModalTxt.innerHTML = txt;
@@ -24,7 +24,7 @@ window.onclick = (event) => {
     if (event.target === gElmodal) {
         gElmodal.hidden = true;
     }
-}
+};
 
 function onCloseModal() {
     gElmodal.hidden = true;
@@ -44,3 +44,10 @@ function onGoToGallery() {
     resetLineSelection();
 }
 
+function renderActiveTab(elThisTab = null) {
+    // remove prev active tab
+    const elPrevActive = document.querySelector('li.active');
+    if (elPrevActive) elPrevActive.classList.remove('active');
+    // make this tab active if given
+    if (elThisTab) elThisTab.classList.add('active');
+}

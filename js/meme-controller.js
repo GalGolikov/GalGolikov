@@ -22,16 +22,11 @@ function renderSavedMemesScreen() {
     } else {
         content = `<span class="empty-state">No saved memes yet!</span>`;
     }
-
     const screenStrHTML = `<div class="saved-memes">${content}</div>`;
     gElScreenContainer.innerHTML = screenStrHTML;
 
-    // remove prev active tab
-    const elPrevActive = document.querySelector('.active');
-    if (elPrevActive) elPrevActive.classList.remove('active');
-    // make this tab active
     const elThisTab = document.querySelector('.saved-memes-tab');
-    elThisTab.classList.add('active');
+    renderActiveTab(elThisTab);
 }
 
 function renderGalleryScreen() {
@@ -44,12 +39,8 @@ function renderGalleryScreen() {
     gElScreenContainer.innerHTML = screenStrHTML;
     renderImgsToGallery(gImgs);
 
-    // remove prev active tab
-    const elPrevActive = document.querySelector('.active');
-    if (elPrevActive) elPrevActive.classList.remove('active');
-    // make this tab active
     const elThisTab = document.querySelector('.gallery-tab');
-    elThisTab.classList.add('active');
+    renderActiveTab(elThisTab);
     renderFilters();
 }
 
@@ -108,8 +99,7 @@ function renderMemeEditScreen() {
     renderCurrAlignPressed();
     // hammerCanvas();
     // remove prev active tab
-    const elPrevActive = document.querySelector('.active');
-    if (elPrevActive) elPrevActive.classList.remove('active');
+    renderActiveTab();
 }
 
 function resizeCanvas() {
