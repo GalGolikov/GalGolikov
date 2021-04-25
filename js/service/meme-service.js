@@ -1,7 +1,7 @@
 'use strict';
 
 // Global model variables:
-var gKeywords = { 'funny': 12, 'cute': 3, 'tv': 12, 'politics': 3, 'sleep': 2, 'tough': 3, 'kids': 4, 'kiss': 2 }
+var gKeywords = { 'funny': 5, 'cute': 3, 'tv': 6, 'politics': 0, 'sleep': 2, 'tough': 1, 'kids': 1, 'kiss': 2 }
 var gImgs = [{ id: 1, url: 'img/meme-imgs(square)/1.jpg', keywords: ['funny', 'tv', 'politics'] },
 { id: 2, url: 'img/meme-imgs(square)/2.jpg', keywords: ['animals', 'cute', 'kiss'] },
 { id: 3, url: 'img/meme-imgs(square)/3.jpg', keywords: ['animals', 'cute', 'kids', 'sleep'] },

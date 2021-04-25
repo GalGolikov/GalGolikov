@@ -8,15 +8,13 @@ function renderSavedMemesScreen() {
     let content = '';
     if (gSavedMemes.length) {
         let savedMemesHTML = '';
-        gSavedMemes.forEach(meme, index => {
+        gSavedMemes.forEach((meme, index) => {
             // convert each meme to img elements
-            let url = meme.url;
-            let details = meme.details;
             let elImg = `
             <div>
-                <img src="${url}}"/>
+                <img src="${meme.url}}"/>
                 <button class="delete-meme-btn" onclick="onDeleteSavedMeme(${index})"><i class="fas fa-trash-alt"></i></button>
-                <button class="edit-meme-btn" onclick="onEditSavedMeme(${details})"><i class="fas fa-edit"></i></button>
+                <button class="edit-meme-btn" onclick="onEditSavedMeme(${meme.details})"><i class="fas fa-edit"></i></button>
             </div>`;
             savedMemesHTML += elImg;
         });
@@ -37,16 +35,14 @@ function renderSavedMemesScreen() {
 }
 
 function renderGalleryScreen() {
-    let imagesStrHTML = '';
-    for (let i = 1; i <= gImgs.length; i++) {
-        imagesStrHTML += `<img onclick="onSelectImg(this,${i})" src="img/meme-imgs(square)/${i}.jpg" alt="${i}.jpg"></img>`;
-    }
     const screenStrHTML = `<h4>Upload an image :</h4>
     <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />
     <h3>OR</h3>
     <h4>Select from gallery :</h4>
-    <section class="img-gallery">${imagesStrHTML}</section>`;
+    <section class="keywords-container"></section>
+    <section class="img-gallery"></section>`;
     gElScreenContainer.innerHTML = screenStrHTML;
+    renderImgsToGallery(gImgs);
 
     // remove prev active tab
     const elPrevActive = document.querySelector('.active');
@@ -54,6 +50,7 @@ function renderGalleryScreen() {
     // make this tab active
     const elThisTab = document.querySelector('.gallery-tab');
     elThisTab.classList.add('active');
+    renderFilters();
 }
 
 function renderMemeEditScreen() {

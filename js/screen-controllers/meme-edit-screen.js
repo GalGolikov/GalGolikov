@@ -178,7 +178,7 @@ function onClearCanvas() {
 }
 
 function onSaveToStorage() {
-    const meme = JSON.parse(JSON.stringify(gMeme));
+    const meme = { url: gElCanvas.toDataURL(), details: gMeme };
     gSavedMemes.push(meme);
     saveMemesToLocalStorage(gSavedMemes);
 
